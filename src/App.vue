@@ -1,7 +1,7 @@
 <template>
-	<div id="app">
+	<main :class="{ dark: darkMode }">
 		<router-view />
-	</div>
+	</main>
 </template>
 
 <script>
@@ -10,7 +10,39 @@ export default {
 		this.$store.dispatch('getAllCountries');
 	},
 	methods: {},
+	computed: {
+		darkMode() {
+			return this.$store.getters.darkMode;
+		},
+	},
+	components: {},
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+body,
+html {
+	width: 100%;
+	min-height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Nunito Sans', sans-serif;
+}
+
+main {
+	background-color: $white;
+	color: $very-dark-blue;
+	&.dark {
+		color: $white;
+	}
+}
+</style>

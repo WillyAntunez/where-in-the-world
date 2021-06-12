@@ -7,10 +7,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 		AllCountries: [],
+		darkMode: false,
 	},
 	mutations: {
 		setAllCountries(state, payload) {
 			state.AllCountries = payload;
+		},
+		toggleDarkMode(state) {
+			state.darkMode = !state.darkMode;
 		},
 	},
 	actions: {
@@ -22,6 +26,11 @@ export default new Vuex.Store({
 			} catch (error) {
 				throw new Error(error);
 			}
+		},
+	},
+	getters: {
+		darkMode(state) {
+			return state.darkMode;
 		},
 	},
 	modules: {},
