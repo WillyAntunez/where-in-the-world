@@ -1,10 +1,13 @@
 <template>
 	<main :class="{ dark: darkMode }">
+		<Header></Header>
 		<router-view />
 	</main>
 </template>
 
 <script>
+import Header from '@/components/Header.vue';
+
 export default {
 	beforeCreate() {
 		this.$store.dispatch('getAllCountries');
@@ -15,7 +18,7 @@ export default {
 			return this.$store.getters.darkMode;
 		},
 	},
-	components: {},
+	components: { Header },
 };
 </script>
 
