@@ -1,6 +1,6 @@
 <template>
 	<header>
-		<div class="header-container">
+		<div class="header-container container">
 			<router-link to="/">
 				<h1>Where in the world?</h1>
 			</router-link>
@@ -64,21 +64,20 @@ export default {
 <style lang="scss">
 header {
 	position: fixed;
+	top: 0;
 	width: 100%;
 	height: 75px;
-	padding: 0 16px;
 	background-color: $white;
 	font-weight: 800;
 	box-shadow: $shadow1;
 	user-select: none;
+	z-index: 9999;
+
 	.header-container {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		height: 100%;
-		width: 100%;
-		margin: 0 auto;
-		max-width: 1100px;
+
 		a {
 			color: inherit;
 			text-decoration: none;
@@ -86,6 +85,7 @@ header {
 				font-size: 1.15em;
 			}
 		}
+
 		button {
 			display: flex;
 			background-color: transparent;
@@ -95,11 +95,13 @@ header {
 			outline: none;
 			align-items: center;
 			height: 50%;
+
 			.icon {
 				width: 16px;
 				height: 16px;
 				margin-right: 0.75em;
 			}
+
 			.text {
 				font-size: 1em;
 				font-weight: 600;

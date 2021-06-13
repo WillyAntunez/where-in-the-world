@@ -1,5 +1,5 @@
 <template>
-	<main :class="{ dark: darkMode }">
+	<main :class="{ dark: darkMode }" class="main">
 		<Header></Header>
 		<router-view />
 	</main>
@@ -26,7 +26,7 @@ export default {
 body,
 html {
 	width: 100%;
-	min-height: 100%;
+	min-height: 100vh;
 	padding: 0;
 	margin: 0;
 }
@@ -41,11 +41,24 @@ body {
 	font-family: 'Nunito Sans', sans-serif;
 }
 
-main {
-	background-color: $white;
+.main {
+	width: 100%;
+	min-height: 100vh;
+	padding-top: 75px;
+
+	background-color: $very-light-gray;
 	color: $very-dark-blue;
 	&.dark {
+		background-color: $very-dark-blue2;
 		color: $white;
 	}
+}
+
+.container {
+	padding: 0 16px;
+	height: 100%;
+	width: 100%;
+	margin: 0 auto;
+	max-width: 1100px;
 }
 </style>
