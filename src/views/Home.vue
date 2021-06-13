@@ -1,5 +1,6 @@
 <template>
 	<div class="home container">
+		<!-- filter options -->
 		<div class="filter-options">
 			<div class="search">
 				<input
@@ -73,16 +74,48 @@
 				</div>
 			</div>
 		</div>
+		<!-- Countries cards -->
+		<div class="countries">
+			<div class="cards-container">
+				<div
+					class="card"
+					v-for="country in filteredCountries"
+					:key="country.name"
+				>
+					<a href="#">
+						<div class="country-flag">
+							<img :src="country.flag" :alt="`${country.name} flag`" />
+						</div>
+						<div class="country-info">
+							<h2 class="country-name">
+								{{ country.name | limitCountryName }}
+							</h2>
+							<p>
+								<b>Population: </b>
+								{{ country.population | commaSeparatedNumber }}
+							</p>
+							<p><b>Region: </b> {{ country.region }}</p>
+							<p><b>Capital: </b> {{ country.capital }}</p>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
 export default {
+	mounted() {
+		document.addEventListener('scroll', this.handleInfiniteScroll);
+	},
 	name: 'Home',
 	data() {
 		return {
 			query: '',
 			displayRegionsMenu: false,
+			countriesLimit: 20,
+			countriesPerPage: 20,
 			regionSelected: {
 				name: 'All',
 				value: 'All',
@@ -115,6 +148,23 @@ export default {
 			],
 		};
 	},
+	computed: {
+		filteredCountries() {
+			const allCountries = this.$store.getters.allCountries;
+			let filteredCountries = allCountries.map((el) => el);
+			if (this.regionSelected.value !== 'All') {
+				filteredCountries = filteredCountries.filter(
+					(country) => country.region === this.regionSelected.value
+				);
+			}
+			if (this.query.trim().length > 0) {
+				filteredCountries = filteredCountries.filter((country) =>
+					country.name.toLowerCase().includes(this.query.trim().toLowerCase())
+				);
+			}
+			return filteredCountries.slice(0, this.countriesLimit);
+		},
+	},
 	methods: {
 		closeMenu() {
 			this.displayRegionsMenu = false;
@@ -122,6 +172,17 @@ export default {
 		selectRegion(region) {
 			this.regionSelected = region;
 			this.displayRegionsMenu = false;
+		},
+		handleInfiniteScroll() {
+			const {
+				scrollTop,
+				scrollHeight,
+				clientHeight,
+			} = document.documentElement;
+
+			if (scrollTop + clientHeight >= scrollHeight) {
+				this.countriesLimit = this.countriesLimit + this.countriesPerPage;
+			}
 		},
 	},
 	directives: {
@@ -151,6 +212,21 @@ export default {
 				document.body.removeEventListener('click', el.closeMenuEvent);
 				document.body.removeEventListener('keyup', el.closeMenuEvent);
 			},
+		},
+	},
+	filters: {
+		commaSeparatedNumber(value) {
+			let val = value;
+			while (/(\d+)(\d{3})/.test(val.toString())) {
+				val = val.toString().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2');
+			}
+			return val;
+		},
+		limitCountryName(value) {
+			if (value.length < 35) {
+				return value;
+			}
+			return value.slice(0, 35).trim() + '...';
 		},
 	},
 };
@@ -239,6 +315,52 @@ export default {
 			}
 		}
 	}
+	.countries {
+		margin-top: 20px;
+		.cards-container {
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			.card {
+				border-radius: 4px;
+				box-shadow: $shadow1;
+				overflow: hidden;
+				margin-bottom: 20px;
+				margin-left: 20px;
+				width: 264px;
+				height: 335px;
+				a {
+					width: 100%;
+					height: 100%;
+					display: block;
+					text-decoration: none;
+					color: inherit;
+					.country-flag {
+						width: 100%;
+						height: 160px;
+						img {
+							width: 100%;
+							height: 100%;
+							object-fit: cover;
+						}
+					}
+					.country-info {
+						padding: 30px 25px;
+						h2 {
+							margin: 0;
+							margin-bottom: 23px;
+							font-size: 1.15em;
+						}
+						p {
+							font-size: 0.8em;
+							margin: 0;
+							margin-bottom: 10px;
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 .dark {
@@ -265,6 +387,13 @@ export default {
 							}
 						}
 					}
+				}
+			}
+		}
+		.countries {
+			.cards-container {
+				.card {
+					background-color: $dark-blue;
 				}
 			}
 		}

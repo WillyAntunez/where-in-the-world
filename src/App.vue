@@ -11,6 +11,7 @@ import Header from '@/components/Header.vue';
 export default {
 	beforeCreate() {
 		this.$store.dispatch('getAllCountries');
+		this.$store.dispatch('readDarkMode');
 	},
 	methods: {},
 	computed: {
@@ -59,6 +60,6 @@ body {
 	height: 100%;
 	width: 100%;
 	margin: 0 auto;
-	max-width: 1100px;
+	max-width: 1300px;
 }
 </style>
