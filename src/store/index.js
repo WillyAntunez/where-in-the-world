@@ -8,10 +8,17 @@ export default new Vuex.Store({
 	state: {
 		allCountries: [],
 		darkMode: false,
+		countriesLoaded: false,
+		apiError: null,
 	},
 	mutations: {
 		setAllCountries(state, payload) {
 			state.allCountries = payload;
+			state.countriesLoaded = true;
+		},
+		setApiError(state, payload) {
+			state.apiError = payload;
+			state.countriesLoaded = true;
 		},
 		toggleDarkMode(state) {
 			state.darkMode = !state.darkMode;
@@ -35,8 +42,12 @@ export default new Vuex.Store({
 			try {
 				const res = await axios.get(`https://restcountries.eu/rest/v2/all`);
 				const data = await res.data;
-				commit('setAllCountries', data);
+				if (res.status >= 200 && res.status < 300) {
+					commit('setAllCountries', data);
+					return;
+				}
 			} catch (error) {
+				commit('setApiError', error);
 				throw new Error(error);
 			}
 		},
