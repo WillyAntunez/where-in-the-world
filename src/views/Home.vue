@@ -121,6 +121,7 @@ import { mapState } from 'vuex';
 export default {
 	mounted() {
 		document.addEventListener('scroll', this.handleInfiniteScroll);
+		document.title = 'Where in the world?';
 	},
 	name: 'Home',
 	data() {

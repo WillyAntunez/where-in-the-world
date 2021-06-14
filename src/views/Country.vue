@@ -77,6 +77,7 @@
 <script>
 import ErrorMessage from '@/components/ErrorMessage.vue';
 export default {
+	mounted() {},
 	name: 'Country',
 	data() {
 		return {};
@@ -87,6 +88,9 @@ export default {
 		},
 		country() {
 			const country = this.$store.getters.country(this.countryCode);
+			if (country) {
+				document.title = `Where in the world? - ${country.name}`;
+			}
 			return country;
 		},
 		currenciesToString() {
@@ -225,7 +229,6 @@ export default {
 		}
 	}
 	.country {
-		display: flex;
 		justify-content: space-between;
 		.country-details {
 			.border-countries-container {

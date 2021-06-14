@@ -22,6 +22,9 @@
 
 <script>
 export default {
+	mounted() {
+		document.title = `Where in the world? - Error`;
+	},
 	name: 'ErrorMessage',
 	props: {
 		msg: {
