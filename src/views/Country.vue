@@ -22,7 +22,8 @@
 				<span>Back</span>
 			</router-link>
 		</div>
-		<div class="country">
+		<ErrorMessage msg="The country was not found." v-if="!country" />
+		<div class="country" v-if="country">
 			<div class="country-flag">
 				<img :src="country.flag" :alt="`${country.name} flag`" />
 			</div>
@@ -48,11 +49,6 @@
 						<p><b>Currencies:</b> {{ currenciesToString }}</p>
 						<p><b>Languages:</b> {{ languagesToString }}</p>
 					</div>
-
-					<!-- TODO: MOVER LOADER AFUERA DEL COMPONENTE HOME Y AÑADIR UN V-IF AL ROUTER VIEW -->
-					<!-- TODO: MANEJO DE PAIS NO ENCONTRADO -->
-					<!-- TODO: MANEJO DE 404 -->
-					<!-- TODO: MANEJO DE ERROR A COMPONENTE, PARA REUTILIZARLO AQUI EN CASO DE PAIS NO ENCONTRADO -->
 				</div>
 				<div class="border-countries-container">
 					<h3>Border countries:</h3>
@@ -79,15 +75,11 @@
 </template>
 
 <script>
+import ErrorMessage from '@/components/ErrorMessage.vue';
 export default {
-	created() {
-		// this.countryCode = this.$route.params.name;
-	},
 	name: 'Country',
 	data() {
-		return {
-			// countryCode: '',
-		};
+		return {};
 	},
 	computed: {
 		countryCode() {
@@ -125,6 +117,9 @@ export default {
 			});
 			return borderCountries;
 		},
+	},
+	components: {
+		ErrorMessage,
 	},
 };
 </script>

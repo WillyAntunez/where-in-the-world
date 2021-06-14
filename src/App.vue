@@ -1,12 +1,20 @@
 <template>
 	<main :class="{ dark: darkMode }" class="main">
+		<div class="loader" v-if="!countriesLoaded">
+			<img src="@/assets/gif/loader.gif" alt="loader" v-if="!darkMode" />
+			<img src="@/assets/gif/loader-dark.gif" alt="loader-dark" v-else />
+			<h2>Loading countries...</h2>
+		</div>
+		<ErrorMessage v-if="apiError" :msg="apiError" />
 		<Header></Header>
-		<router-view />
+		<router-view v-if="countriesLoaded && !apiError" />
 	</main>
 </template>
 
 <script>
 import Header from '@/components/Header.vue';
+import ErrorMessage from '@/components/ErrorMessage.vue';
+import { mapState } from 'vuex';
 
 export default {
 	beforeCreate() {
@@ -15,11 +23,12 @@ export default {
 	},
 	methods: {},
 	computed: {
+		...mapState(['countriesLoaded', 'apiError']),
 		darkMode() {
 			return this.$store.getters.darkMode;
 		},
 	},
-	components: { Header },
+	components: { Header, ErrorMessage },
 };
 </script>
 
@@ -61,6 +70,21 @@ body {
 	width: 100%;
 	margin: 0 auto;
 	max-width: 1300px;
+}
+
+.loader {
+	margin-top: 40px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	img {
+		width: 80px;
+		height: 80px;
+	}
+	h2 {
+		font-size: 1.3rem;
+	}
 }
 
 @media screen and (min-width: 768px) {

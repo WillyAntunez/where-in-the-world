@@ -15,6 +15,13 @@ const routes = [
 		component: () =>
 			import(/* webpackChunkName: "country" */ '@/views/Country.vue'),
 	},
+	{
+		path: '*',
+		name: '404',
+		component: () =>
+			import(/* webpackChunkName: "country" */ '@/components/ErrorMessage.vue'),
+		props: { msg: "Oh... You shouldn't be here, go back." },
+	},
 ];
 
 const router = new VueRouter({
