@@ -112,22 +112,28 @@
 					v-for="country in filteredCountries"
 					:key="country.name"
 				>
-					<a href="#">
+					<RouterLink
+						:to="{ name: 'Country', params: { name: country.alpha3Code } }"
+					>
 						<div class="country-flag">
 							<img :src="country.flag" :alt="`${country.name} flag`" />
 						</div>
 						<div class="country-info">
 							<h2 class="country-name">
-								{{ country.name | limitCountryName }}
+								{{ country.name | limitCharacters(35) }}
 							</h2>
 							<p>
 								<b>Population: </b>
 								{{ country.population | commaSeparatedNumber }}
 							</p>
-							<p><b>Region: </b> {{ country.region }}</p>
-							<p><b>Capital: </b> {{ country.capital }}</p>
+							<p>
+								<b>Region: </b> {{ country.region ? country.region : ' - ' }}
+							</p>
+							<p>
+								<b>Capital: </b> {{ country.capital ? country.capital : ' - ' }}
+							</p>
 						</div>
-					</a>
+					</RouterLink>
 				</div>
 			</div>
 		</div>
@@ -246,27 +252,13 @@ export default {
 			},
 		},
 	},
-	filters: {
-		commaSeparatedNumber(value) {
-			let val = value;
-			while (/(\d+)(\d{3})/.test(val.toString())) {
-				val = val.toString().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2');
-			}
-			return val;
-		},
-		limitCountryName(value) {
-			if (value.length < 35) {
-				return value;
-			}
-			return value.slice(0, 35).trim() + '...';
-		},
-	},
 };
 </script>
 
 <style lang="scss" scoped>
 .home {
 	padding-top: 24px;
+	padding-bottom: 24px;
 	.filter-options {
 		width: 100%;
 		.search {
@@ -309,6 +301,7 @@ export default {
 			border-radius: 4px;
 			box-shadow: $shadow1;
 			max-width: 200px;
+			user-select: none;
 			.selection {
 				position: relative;
 				padding: 0 15px;
@@ -339,7 +332,8 @@ export default {
 					li {
 						padding: 8px 20px;
 						border-radius: 4px;
-						&:active {
+						&:active,
+						&:hover {
 							background-color: lighten($dark-gray, 35%);
 						}
 					}
@@ -394,7 +388,7 @@ export default {
 				box-shadow: $shadow1;
 				overflow: hidden;
 				margin-bottom: 20px;
-				margin-left: 20px;
+				margin-right: 20px;
 				width: 264px;
 				height: 335px;
 				a {
@@ -450,7 +444,8 @@ export default {
 					background-color: $dark-blue;
 					ul {
 						li {
-							&:active {
+							&:active,
+							&:hover {
 								background-color: darken($dark-blue, 5%);
 							}
 						}

@@ -67,6 +67,13 @@ export default new Vuex.Store({
 		allCountries(state) {
 			return state.allCountries;
 		},
+		country(state) {
+			return (countryCode) => {
+				return state.allCountries.find(
+					(country) => country.alpha3Code === countryCode
+				);
+			};
+		},
 	},
 	modules: {},
 });

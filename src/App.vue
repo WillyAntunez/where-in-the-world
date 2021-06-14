@@ -62,4 +62,10 @@ body {
 	margin: 0 auto;
 	max-width: 1300px;
 }
+
+@media screen and (min-width: 768px) {
+	.container {
+		padding: 0 24px;
+	}
+}
 </style>
