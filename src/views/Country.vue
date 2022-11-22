@@ -112,13 +112,16 @@ export default {
 		borderCountries() {
 			let borderCountries = [];
 			const borderCountriesCodes = this.country.borders;
-			borderCountriesCodes.forEach((countryCode) => {
-				const { name, alpha3Code } = this.$store.getters.country(countryCode);
-				borderCountries.push({
-					name,
-					alpha3Code,
+			if(borderCountriesCodes !== undefined && borderCountriesCodes.length >= 1){
+				borderCountriesCodes.forEach((countryCode) => {
+					const { name, alpha3Code } = this.$store.getters.country(countryCode);
+					borderCountries.push({
+						name,
+						alpha3Code,
+					});
 				});
-			});
+
+			}
 			return borderCountries;
 		},
 	},

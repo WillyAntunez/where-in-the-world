@@ -40,7 +40,7 @@ export default new Vuex.Store({
 	actions: {
 		async getAllCountries({ commit }) {
 			try {
-				const res = await axios.get(`https://restcountries.eu/rest/v2/all`);
+				const res = await axios.get(`https://restcountries.com/v2/all`);
 				const data = await res.data;
 				if (res.status >= 200 && res.status < 300) {
 					commit('setAllCountries', data);
